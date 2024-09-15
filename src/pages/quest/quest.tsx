@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { api } from '../../store';
 import { QuestCard } from '../../types/types';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
+import { Helmet } from 'react-helmet-async';
 
 function Quest():JSX.Element {
   const {id:questId} = useParams();
@@ -31,6 +32,9 @@ function Quest():JSX.Element {
 
   return (
     <main className="decorated-page quest-page">
+      <Helmet>
+        <title>Квест - Escape Room</title>
+      </Helmet>
       <div className="decorated-page__decor" aria-hidden="true">
         <picture>
           <source type="image/webp" srcSet={`${currentQuest.previewImgWebp}, ${currentQuest.coverImgWebp} 2x`}/><img src={currentQuest.previewImg} srcSet={`${currentQuest.coverImg} 2x`} width="1366" height="768" alt=""/>
@@ -51,11 +55,11 @@ function Quest():JSX.Element {
             <li className="tags__item">
               <svg width="14" height="14" aria-hidden="true">
                 <use xlinkHref="#icon-level"></use>
-              </svg>{currentQuest.level}
+              </svg>{Filter.LEVELS[`${currentQuest.level}`]}
             </li>
           </ul>
           <p className="quest-page__description">{currentQuest.description}</p>
-          <Link className="btn btn--accent btn--cta quest-page__btn" to={AppRoute.Booking}>Забронировать</Link>
+          <Link className="btn btn--accent btn--cta quest-page__btn" to={`/${AppRoute.Quest}/${currentQuest.id}/${APIRoute.Booking}`}>Забронировать</Link>
         </div>
       </div>
     </main>

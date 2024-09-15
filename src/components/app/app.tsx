@@ -16,11 +16,11 @@ import MyQuests from '../../pages/my-quests/my-quests';
 function App(): JSX.Element {
   const isQuestsDataLoading = useAppSelector((state) => state.IsQuestsDataLoading);
   const authorizationStatus = useAppSelector((state) => state.AuthorizationStatus);
-  // if (isQuestsDataLoading || authorizationStatus === AuthorizationStatus.Unknown) {
-  //   return (
-  //     < LoadingScreen />
-  //   );
-  // }
+  if (isQuestsDataLoading || authorizationStatus === AuthorizationStatus.Unknown) {
+    return (
+      < LoadingScreen />
+    );
+  }
   if (isQuestsDataLoading) {
     return (
       < LoadingScreen />

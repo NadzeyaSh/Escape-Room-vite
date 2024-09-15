@@ -33,3 +33,16 @@ export const logoutAction = createAsyncThunk<void, undefined, {dispatch: AppDisp
     dispatch(requireAuthorization({userData: undefined, authStatus: AuthorizationStatus.NoAuth}));
   },
 );
+
+
+export const checkAuthAction = createAsyncThunk<void, undefined, {dispatch: AppDispatch; state: State; extra: AxiosInstance}>(
+  'user/checkAuth',
+  async (_arg, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.get<UserData>(APIRoute.Login);
+      dispatch(requireAuthorization({userData: data, authStatus: AuthorizationStatus.Auth}));
+    } catch {
+      dispatch(requireAuthorization({userData: undefined, authStatus: AuthorizationStatus.NoAuth}));
+    }
+  },
+);

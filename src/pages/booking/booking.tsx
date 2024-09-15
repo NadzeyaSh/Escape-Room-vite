@@ -4,20 +4,31 @@ import LoadingScreen from '../../components/loading-screen/loading-screen';
 import { APIRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { api } from '../../store';
-import { QuestCard } from '../../types/types';
+import { BookingCard } from '../../types/types';
+import { Helmet } from 'react-helmet-async';
 
 function Booking():JSX.Element {
+  const questData = useAppSelector((state) => state.QuestsData);
+
   const {id:questId} = useParams();
-  const [currentQuest, setCurrentQuest] = useState<QuestCard | undefined >();
+  const [currentBooking, setCurrentBooking] = useState<BookingCard[] | undefined >();
+  const [activePlace, setActivePlace] = useState<BookingCard | null>(null);
+
   const navigate = useNavigate();
+  const currentQuest = questData?.find((item) => item.id === questId);
+
+  useEffect(() => {
+    if (currentBooking && currentBooking.length > 0) {
+      setActivePlace(currentBooking[0]);
+    }
+  }, [currentBooking]);
 
   useEffect(() => {
     if(questId) {
       (async () => {
         try {
-          const {data:currentQuestData} = await api.get<QuestCard>(`${APIRoute.CurrentQuest}/${questId}`);
-          setCurrentQuest(currentQuestData);
-
+          const {data:currentBookingData} = await api.get<BookingCard[]>(`${APIRoute.CurrentQuest}/${questId}/${APIRoute.Booking}`);
+          setCurrentBooking(currentBookingData);
         } catch {
           navigate('/error');
 
@@ -26,28 +37,31 @@ function Booking():JSX.Element {
       })();
     }
   }, [navigate, questId]);
-    // if(!currentQuest) {
-    //   return (<LoadingScreen />);
-    // }
+  if(!currentQuest) {
+    return (<LoadingScreen />);
+  }
   return (
     <main className="page-content decorated-page">
+      <Helmet>
+        <title>Бронирование квеста - Escape Room</title>
+      </Helmet>
       <div className="decorated-page__decor" aria-hidden="true">
         <picture>
-          <source type="image/webp" srcSet="img/content/maniac/maniac-bg-size-m.webp, img/content/maniac/maniac-bg-size-m@2x.webp 2x"/><img src="img/content/maniac/maniac-bg-size-m.jpg" srcSet="img/content/maniac/maniac-bg-size-m@2x.jpg 2x" width="1366" height="1959" alt=""/>
+          <source type="image/webp" srcSet={`${currentQuest.previewImgWebp}, ${currentQuest.previewImgWebp} 2x`}/><img src={currentQuest.previewImg} srcSet={`${currentQuest.previewImg} 2x`} width="1366" height="1959" alt=""/>
         </picture>
       </div>
       <div className="container container--size-s">
         <div className="page-content__title-wrapper">
           <h1 className="subtitle subtitle--size-l page-content__subtitle">Бронирование квеста
           </h1>
-          <p className="title title--size-m title--uppercase page-content__title">{currentQuest?.title}</p>
+          <p className="title title--size-m title--uppercase page-content__title">{currentQuest.title}</p>
         </div>
         <div className="page-content__item">
           <div className="booking-map">
             <div className="map">
               <div className="map__container"></div>
             </div>
-            <p className="booking-map__address">Вы&nbsp;выбрали: наб. реки Карповки&nbsp;5, лит&nbsp;П, м. Петроградская</p>
+            <p className="booking-map__address">Вы&nbsp;выбрали: {activePlace?.location.address}</p>
           </div>
         </div>
         <form className="booking-form" action="https://echo.htmlacademy.ru/" method="post">
@@ -56,41 +70,20 @@ function Booking():JSX.Element {
             <fieldset className="booking-form__date-section">
               <legend className="booking-form__date-title">Сегодня</legend>
               <div className="booking-form__date-inner-wrapper">
-                <label className="custom-radio booking-form__date">
-                  <input type="radio" id="today9h45m" name="date" required value="today9h45m"/><span className="custom-radio__label">9:45</span>
-                </label>
-                <label className="custom-radio booking-form__date">
-                  <input type="radio" id="today15h00m" name="date" checked required value="today15h00m"/><span className="custom-radio__label">15:00</span>
-                </label>
-                <label className="custom-radio booking-form__date">
-                  <input type="radio" id="today17h30m" name="date" required value="today17h30m"/><span className="custom-radio__label">17:30</span>
-                </label>
-                <label className="custom-radio booking-form__date">
-                  <input type="radio" id="today19h30m" name="date" required value="today19h30m" disabled/><span className="custom-radio__label">19:30</span>
-                </label>
-                <label className="custom-radio booking-form__date">
-                  <input type="radio" id="today21h30m" name="date" required value="today21h30m"/><span className="custom-radio__label">21:30</span>
-                </label>
+                {activePlace?.slots.today.map((item) => (
+                  <label className="custom-radio booking-form__date" key={item.time}>
+                    <input type="radio" id="today9h45m" name="date" required value="today9h45m" disabled = {!item.isAvailable}/>
+                    <span className="custom-radio__label">{item.time}</span>
+                  </label>))}
               </div>
             </fieldset>
             <fieldset className="booking-form__date-section">
               <legend className="booking-form__date-title">Завтра</legend>
               <div className="booking-form__date-inner-wrapper">
-                <label className="custom-radio booking-form__date">
-                  <input type="radio" id="tomorrow11h00m" name="date" required value="tomorrow11h00m"/><span className="custom-radio__label">11:00</span>
-                </label>
-                <label className="custom-radio booking-form__date">
-                  <input type="radio" id="tomorrow15h00m" name="date" required value="tomorrow15h00m" disabled/><span className="custom-radio__label">15:00</span>
-                </label>
-                <label className="custom-radio booking-form__date">
-                  <input type="radio" id="tomorrow17h30m" name="date" required value="tomorrow17h30m" disabled/><span className="custom-radio__label">17:30</span>
-                </label>
-                <label className="custom-radio booking-form__date">
-                  <input type="radio" id="tomorrow19h45m" name="date" required value="tomorrow19h45m"/><span className="custom-radio__label">19:45</span>
-                </label>
-                <label className="custom-radio booking-form__date">
-                  <input type="radio" id="tomorrow21h30m" name="date" required value="tomorrow21h30m"/><span className="custom-radio__label">21:30</span>
-                </label>
+                {activePlace?.slots.tomorrow.map((item) => (
+                  <label className="custom-radio booking-form__date" key={item.time}>
+                    <input type="radio" id="tomorrow11h00m" name="date" required value="tomorrow11h00m" disabled = {!item.isAvailable}/><span className="custom-radio__label">{item.time}</span>
+                  </label>))}
               </div>
             </fieldset>
           </fieldset>

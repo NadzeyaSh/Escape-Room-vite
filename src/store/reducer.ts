@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { CardProps, GenreFiltration, UserData } from '../types/types';
-import { changeActiveFilter, requireAuthorization, setQuestsData, setQuestsDataLoadingStatus } from './actions';
+import { requireAuthorization, setQuestsData, setQuestsDataLoadingStatus } from './actions';
 import { AuthorizationStatus, FILTERS_GENRE } from '../const';
 
 interface initialStateProps {
@@ -30,9 +30,6 @@ export const reducer = createReducer(InitialState,(builder) => {
     })
     .addCase(setQuestsDataLoadingStatus, (state, action) => {
       state.IsQuestsDataLoading = action.payload;
-    })
-    .addCase(changeActiveFilter,(state,action)=>{
-      state.CurrentFilter = action.payload.currentFilter;
     })
     .addCase(setQuestsData,(state,action)=>{
       state.QuestsData = action.payload.questsData;

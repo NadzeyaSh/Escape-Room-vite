@@ -16,6 +16,29 @@ export type QuestCard = CardProps & {
         coverImgWebp: string;
   }
 
+export type BookingCard = {
+      id: string;
+      location: {
+        address: string;
+        coords: number[];
+      };
+      slots: {
+        today: [
+          {
+            time: string;
+            isAvailable: boolean;
+          }
+        ];
+        tomorrow: [
+          {
+            time: string;
+            isAvailable: boolean;
+          }
+        ];
+      };
+    }
+
+
 export interface UserData {
   email: string;
   token: string;
@@ -36,4 +59,10 @@ export type FilterType = {
   [key: string]: {
       [subKey: string]: string;
   };
+};
+
+export type City = {
+  address: string;
+  coords: number[];
+  zoom: number;
 };

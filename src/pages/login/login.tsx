@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthorizationStatus, AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
+import { Helmet } from 'react-helmet-async';
 
 function Login():JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -31,6 +32,9 @@ function Login():JSX.Element {
   };
   return (
     <main className="decorated-page login">
+      <Helmet>
+        <title>Авторизация - Escape Room</title>
+      </Helmet>
       <div className="decorated-page__decor" aria-hidden="true">
         <picture>
           <source type="image/webp" srcSet="img/content/maniac/maniac-size-m.webp, img/content/maniac/maniac-size-m@2x.webp 2x"/><img src="img/content/maniac/maniac-size-m.jpg" srcSet="img/content/maniac/maniac-size-m@2x.jpg 2x" width="1366" height="768" alt=""/>

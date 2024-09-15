@@ -4,7 +4,7 @@ export enum AppRoute {
     Root = '/',
     Login = 'login',
     Favorites = 'favorites',
-    Booking = '/booking',
+    Booking = '/quest/:id/booking',
     Quest = 'quest',
     QuestDetail = '/quest/:id',
     Contact = 'contact',
@@ -17,6 +17,7 @@ export enum APIRoute {
     Favorite = '/favorite',
     Login = '/login',
     Logout = '/logout',
+    Booking = 'booking'
   }
 export enum AuthorizationStatus {
     Auth = 'AUTH',
@@ -28,7 +29,7 @@ export const FILTERS_GENRE = ['Все квесты','Приключения', '�
 
 export const Filter: FilterType = {
   GENRES: {
-    'all': 'Все квесты',
+    'all-quests': 'Все квесты',
     'adventure': 'Приключения',
     'horror': 'Ужасы',
     'mystic': 'Мистика',
@@ -41,4 +42,9 @@ export const Filter: FilterType = {
     'medium': 'Средний',
     'hard': 'Сложный'
   }
+};
+export const CITY_MOCK = {
+  address: 'Набережная реки Карповки, 5П',
+  coords: [59.968322, 30.317359,],
+  zoom: 17
 };

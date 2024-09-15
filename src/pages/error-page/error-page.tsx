@@ -6,7 +6,7 @@ function ErrorPage() {
   return (
     <>
       <Helmet>
-        <title>Escape Room: error</title>
+        <title>Escape Room: ошибка</title>
       </Helmet>
       <h2 className='title title--size-m page-content__title'>404 Not Found</h2>
       <Link className='btn btn--accent btn--cta quest-page__btn' to={AppRoute.Root}>Вернуться на Главную</Link>
