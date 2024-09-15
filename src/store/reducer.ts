@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { CardProps, GenreFiltration, UserData } from '../types/types';
-import { requireAuthorization, setQuestsData, setQuestsDataLoadingStatus } from './actions';
+import { requireAuthorization, setFavoriteQuestsData, setQuestsData, setQuestsDataLoadingStatus } from './actions';
 import { AuthorizationStatus, FILTERS_GENRE } from '../const';
 
 interface initialStateProps {
@@ -9,6 +9,7 @@ interface initialStateProps {
     User: undefined | UserData;
     IsQuestsDataLoading: boolean;
     CurrentFilter: GenreFiltration;
+    FavoritesQuestsData: undefined |CardProps[];
 
   }
 
@@ -18,8 +19,8 @@ const InitialState: initialStateProps = {
   AuthorizationStatus: AuthorizationStatus.Unknown,
   User: undefined,
   IsQuestsDataLoading: false,
-  CurrentFilter: FILTERS_GENRE[0]
-
+  CurrentFilter: FILTERS_GENRE[0],
+  FavoritesQuestsData: undefined
 } as const;
 
 export const reducer = createReducer(InitialState,(builder) => {
@@ -33,6 +34,9 @@ export const reducer = createReducer(InitialState,(builder) => {
     })
     .addCase(setQuestsData,(state,action)=>{
       state.QuestsData = action.payload.questsData;
+    })
+    .addCase(setFavoriteQuestsData, (state, action) => {
+      state.FavoritesQuestsData = action.payload.favoritesQuestsData;
     });
 });
 

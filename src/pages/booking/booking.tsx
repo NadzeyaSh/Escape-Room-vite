@@ -6,13 +6,14 @@ import { useAppSelector } from '../../hooks';
 import { api } from '../../store';
 import { BookingCard } from '../../types/types';
 import { Helmet } from 'react-helmet-async';
+import Map from '../../components/map/map';
 
 function Booking():JSX.Element {
   const questData = useAppSelector((state) => state.QuestsData);
 
   const {id:questId} = useParams();
-  const [currentBooking, setCurrentBooking] = useState<BookingCard[] | undefined >();
-  const [activePlace, setActivePlace] = useState<BookingCard | null>(null);
+  const [currentBooking, setCurrentBooking] = useState<BookingCard[] >();
+  const [activePlace, setActivePlace] = useState<BookingCard>();
 
   const navigate = useNavigate();
   const currentQuest = questData?.find((item) => item.id === questId);
@@ -58,9 +59,10 @@ function Booking():JSX.Element {
         </div>
         <div className="page-content__item">
           <div className="booking-map">
-            <div className="map">
-              <div className="map__container"></div>
-            </div>
+            {activePlace && (
+              <div className="map">
+                <div className="map__container"><Map city={activePlace.location} points={currentBooking} selectedPoint={activePlace.id}/></div>
+              </div>)}
             <p className="booking-map__address">Вы&nbsp;выбрали: {activePlace?.location.address}</p>
           </div>
         </div>

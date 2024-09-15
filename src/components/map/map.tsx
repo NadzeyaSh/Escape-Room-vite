@@ -5,8 +5,8 @@ import {BookingCard, City} from '../../types/types';
 import 'leaflet/dist/leaflet.css';
 
 enum MarkerIcon {
-  Default = 'markup/img/svg/pin-default.svg',
-  Current = 'markup/img/svg/pin-active.svg',
+  Default = '/markup/img/svg/pin-default.svg',
+  Current = '/markup/img/svg/pin-active.svg',
 }
 
 type MapProps = {

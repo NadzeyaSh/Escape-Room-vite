@@ -64,5 +64,5 @@ export type FilterType = {
 export type City = {
   address: string;
   coords: number[];
-  zoom: number;
+  zoom?: number;
 };

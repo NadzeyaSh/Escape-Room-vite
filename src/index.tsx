@@ -4,6 +4,8 @@ import App from './components/app/app';
 import { store } from './store';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { checkAuthAction, fetchQuestAction } from './store/api-actions';
 
 store.dispatch(fetchQuestAction());
